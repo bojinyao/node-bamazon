@@ -1,0 +1,24 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "A mock version of amazon built in node, with mysql as database",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bojinyao/node-bamazon.git"
+  },
+  "author": "max yao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bojinyao/node-bamazon/issues"
+  },
+  "homepage": "https://github.com/bojinyao/node-bamazon#readme",
+  "dependencies": {
+    "colors": "^1.3.1",
+    "inquirer": "^6.0.0",
+    "mysql": "^2.16.0"
+  }
+}
