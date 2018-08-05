@@ -19,6 +19,7 @@ const SERVERDB = {
     database: DB
 }
 const productTable = "products";
+const LOWQUANTITYCUTOFF = 4; //inclusive
 
 //---------- Color Themes -------------
 colors.setTheme({
@@ -57,7 +58,7 @@ function Main() {
                 break;
 
             case 'View Low Inventory':
-                viewLowInventory();
+                viewLowInventory(`stock_quantity <= ${LOWQUANTITYCUTOFF}`);
                 break;
 
             case 'Add to Inventory':
@@ -75,11 +76,53 @@ function Main() {
 }
 
 function viewProducts() {
-
+    let connection = mysql.createConnection(SERVERDB);
+    connection.query(
+        {
+            sql : `SELECT * FROM ${productTable};`,
+            timeout : STDTIMEOUT
+        }, 
+        function(error, result, field) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            result.forEach(rawDataPacket => {
+                let id = rawDataPacket.item_id;
+                let name = rawDataPacket.product_name;
+                let department = rawDataPacket.department_name;
+                let price = rawDataPacket.price;
+                let quantity = rawDataPacket.stock_quantity;
+                console.log(`ID: ${id} | Product: ${name.info} | Department: ${department.verbose} | Price: $${price} | Inventory: ${quantity}`);
+            });
+        } 
+    )
+    connection.end();
 }
 
 function viewLowInventory() {
-
+    let connection = mysql.createConnection(SERVERDB);
+    connection.query(
+        {
+            sql : `SELECT * FROM ${productTable} where stock_quantity <= ${LOWQUANTITYCUTOFF};`,
+            timeout : STDTIMEOUT
+        },
+        function(error, result, field) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            result.forEach(rawDataPacket => {
+                let id = rawDataPacket.item_id;
+                let name = rawDataPacket.product_name;
+                let department = rawDataPacket.department_name;
+                let price = rawDataPacket.price;
+                let quantity = rawDataPacket.stock_quantity;
+                console.log(`ID: ${id} | Product: ${name.info} | Department: ${department.verbose} | Price: $${price} | Inventory: ${quantity}`);
+            });
+        }
+    )
+    connection.end();
 }
 
 function addToInventory() {

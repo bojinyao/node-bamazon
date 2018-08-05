@@ -46,7 +46,7 @@ function selectAllFrom(table, fn = null) {
     let connection = mysql.createConnection(SERVERDB);
     connection.query(
         {
-            sql: `SELECT * FROM ${table} order by item_id;`,
+            sql: `SELECT * FROM ${table} ORDER BY item_id;`,
             timeout: STDTIMEOUT
         },
         function (error, result, field) {
@@ -55,7 +55,7 @@ function selectAllFrom(table, fn = null) {
                 return;
             }
             result.forEach(rawDataPacket => {
-                console.log(`ID: ${rawDataPacket.item_id} | Product: ${rawDataPacket.product_name.info} | Price: $${rawDataPacket.price}.`)
+                console.log(`ID: ${rawDataPacket.item_id} | Product: ${rawDataPacket.product_name.info} | Price: $${rawDataPacket.price}`)
             });
 
             if (fn) {
