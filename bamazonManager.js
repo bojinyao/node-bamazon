@@ -191,7 +191,7 @@ function addNewProduct() {
     ]).then(function (answer) {
         let name = answer.name;
         let department = answer.department;
-        let price = answer.price;
+        let price = utils.roundToTwo(answer.price);
         let quantity = answer.quantity;
         utils.queryDB(SERVERDB,
             `INSERT INTO ${productTable} (product_name, department_name, price, stock_quantity) VALUES ("${name}", "${department}", ${price}, ${quantity});`,

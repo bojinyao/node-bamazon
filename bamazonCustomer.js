@@ -157,7 +157,7 @@ function promptBuy(dataPackets) {
  * The beginning of app.
  */
 function Main() {
-    selectAllFrom(productTable, promptBuy);
+    selectAllFrom(productTable, askIfPurchase);
 
 }
 

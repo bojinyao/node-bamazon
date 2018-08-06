@@ -19,6 +19,15 @@ module.exports = {
     },
 
     /**
+     * Rounding a number to decimal places IF necessary.
+     * Solution from: https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary
+     * @param {number} num 
+     */
+    roundToTwo(num) {    
+        return +(Math.round(num + "e+2")  + "e-2");
+    },
+
+    /**
      * A somewhat convenient way to make fast DB queries.
      * Query result, field will be passed to callback.
      * @requires mysql
