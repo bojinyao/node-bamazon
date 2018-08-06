@@ -21,18 +21,7 @@ const SERVERDB = {
 const productTable = "products";
 
 //---------- Color Themes -------------
-colors.setTheme({
-    silly: 'rainbow',
-    input: 'grey',
-    verbose: 'cyan',
-    prompt: 'grey',
-    success: 'green',
-    data: 'grey',
-    help: 'cyan',
-    warn: 'yellow',
-    info: 'blue',
-    error: 'red'
-});
+colors.setTheme(utils.colorTheme);
 
 //------------- Functions ---------------
 
