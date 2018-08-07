@@ -22,6 +22,7 @@ const PRODUCT_TABLE = "products";
 const LOW_QUANTITY_CUTOFF = 4; //inclusive
 const DEPARTMENTS = ['Books', 'Movies', 'Electronics', 'Home', 'Grocery', 'Toys', 'Clothing'];
 const MAX_INT = Number.MAX_SAFE_INTEGER;
+const MAX_STR = 100;
 
 //---------- Color Themes -------------
 colors.setTheme(utils.colorTheme);
@@ -166,7 +167,7 @@ function addNewProduct() {
             message: `Product Name:`,
             name: 'name',
             validate: input => {
-                return input.length <= 100 ? true : `Exceed 100 character limit.`.error
+                return 1 <= input.length && input.length <= MAX_STR ? true : `Exceed character limit.`.error
             }
         },
         {
@@ -179,7 +180,7 @@ function addNewProduct() {
             message: `Price of product: $`,
             name: 'price',
             validate: input => {
-                return utils.isNumber(input) && -1 < input && input < MAX_INT ? true : `Invalid Price!`.error;
+                return utils.isNumber(input) && 0 <= input && input < MAX_INT ? true : `Invalid Price!`.error;
             }
         },
         {
@@ -191,7 +192,7 @@ function addNewProduct() {
             }
         }
     ]).then(function (answer) {
-        let name = answer.name;
+        let name = answer.name.trim();
         let department = answer.department;
         let price = utils.roundToTwo(answer.price);
         let quantity = answer.quantity;
