@@ -140,12 +140,15 @@ function promptBuy(dataPackets) {
             return;
         } else {
             let newQuantity = targetPacket.stock_quantity - quantity;
+            let totalPrice = utils.roundToTwo((targetPacket.price * quantity));
+            let currTotalSales = targetPacket.product_sales;
+            let newTotalSales = utils.roundToTwo((totalPrice + currTotalSales));
             updateTableInfo(PRODUCT_TABLE,
-                { stock_quantity: newQuantity },
+                { stock_quantity: newQuantity, product_sales : newTotalSales },
                 { item_id: id },
                 function (result) {
                     if (result.affectedRows === 1) {
-                        console.log(`Your total is $${(targetPacket.price * quantity).toFixed(2)}.`.success)
+                        console.log(`Your total is $${totalPrice}`.success)
                     } else {
                         console.log(`Something's wrong, transaction failed!`.error);
                     }
@@ -162,7 +165,6 @@ function promptBuy(dataPackets) {
  */
 function Main() {
     selectAllFrom(PRODUCT_TABLE, askIfPurchase);
-
 }
 
 
