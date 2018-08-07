@@ -11,14 +11,14 @@ const utils = require("./utils.js");
 // Global Variables
 //=================
 const DB = "bamazon";
-const STDTIMEOUT = 10000;
-const SERVERDB = {
+const STD_TIMEOUT = 10000;
+const SERVER_DB = {
     host: 'localhost',
     user: 'root',
     password: 'root',
     database: DB
 }
-const productTable = "products";
+const PRODUCT_TABLE = "products";
 
 //---------- Color Themes -------------
 colors.setTheme(utils.colorTheme);
@@ -32,11 +32,11 @@ colors.setTheme(utils.colorTheme);
  * @callback fn 
  */
 function selectAllFrom(table, fn = null) {
-    let connection = mysql.createConnection(SERVERDB);
+    let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
             sql: `SELECT * FROM ${table} ORDER BY item_id;`,
-            timeout: STDTIMEOUT
+            timeout: STD_TIMEOUT
         },
         function (error, result, field) {
             if (error) {
@@ -63,11 +63,11 @@ function selectAllFrom(table, fn = null) {
  * @callback fn
  */
 function updateTableInfo(table, set, where, fn = null) {
-    let connection = mysql.createConnection(SERVERDB);
+    let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
             sql: `UPDATE ${table} SET ? WHERE ?;`,
-            timeout: STDTIMEOUT
+            timeout: STD_TIMEOUT
         },
         [set, where],
         function (error, result, field) {
@@ -140,7 +140,7 @@ function promptBuy(dataPackets) {
             return;
         } else {
             let newQuantity = targetPacket.stock_quantity - quantity;
-            updateTableInfo(productTable,
+            updateTableInfo(PRODUCT_TABLE,
                 { stock_quantity: newQuantity },
                 { item_id: id },
                 function (result) {
@@ -161,7 +161,7 @@ function promptBuy(dataPackets) {
  * The beginning of app.
  */
 function Main() {
-    selectAllFrom(productTable, askIfPurchase);
+    selectAllFrom(PRODUCT_TABLE, askIfPurchase);
 
 }
 

@@ -11,17 +11,17 @@ const utils = require("./utils.js");
 // Global Variables
 //=================
 const DB = "bamazon";
-const STDTIMEOUT = 10000;
-const SERVERDB = {
+const STD_TIMEOUT = 10000;
+const SERVER_DB = {
     host: 'localhost',
     user: 'root',
     password: 'root',
     database: DB
 }
-const productTable = "products";
-const LOWQUANTITYCUTOFF = 4; //inclusive
+const PRODUCT_TABLE = "products";
+const LOW_QUANTITY_CUTOFF = 4; //inclusive
 const DEPARTMENTS = ['Books', 'Movies', 'Electronics', 'Home', 'Grocery', 'Toys', 'Clothing'];
-const MAXINT = Number.MAX_SAFE_INTEGER;
+const MAX_INT = Number.MAX_SAFE_INTEGER;
 
 //---------- Color Themes -------------
 colors.setTheme(utils.colorTheme);
@@ -67,11 +67,11 @@ function Main() {
 }
 
 function viewProducts(fn = null) {
-    let connection = mysql.createConnection(SERVERDB);
+    let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT * FROM ${productTable} ORDER BY item_id;`,
-            timeout: STDTIMEOUT
+            sql: `SELECT * FROM ${PRODUCT_TABLE} ORDER BY item_id;`,
+            timeout: STD_TIMEOUT
         },
         function (error, result, field) {
             if (error) {
@@ -95,11 +95,11 @@ function viewProducts(fn = null) {
 }
 
 function viewLowInventory() {
-    let connection = mysql.createConnection(SERVERDB);
+    let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT * FROM ${productTable} where stock_quantity <= ${LOWQUANTITYCUTOFF};`,
-            timeout: STDTIMEOUT
+            sql: `SELECT * FROM ${PRODUCT_TABLE} where stock_quantity <= ${LOW_QUANTITY_CUTOFF};`,
+            timeout: STD_TIMEOUT
         },
         function (error, result, field) {
             if (error) {
@@ -145,8 +145,8 @@ function addToInventory() {
                 let quantity = answer.quantity;
                 let currQuantity = rawDataPacket[id - 1].stock_quantity;
                 let newQuantity = currQuantity + quantity;
-                utils.queryDB(SERVERDB,
-                    `UPDATE ${productTable} SET stock_quantity=${newQuantity} WHERE item_id=${id};`,
+                utils.queryDB(SERVER_DB,
+                    `UPDATE ${PRODUCT_TABLE} SET stock_quantity=${newQuantity} WHERE item_id=${id};`,
                     function (result) {
                         if (result.affectedRows === 1) {
                             console.log(`Update successful!`.success);
@@ -179,7 +179,7 @@ function addNewProduct() {
             message: `Price of product: $`,
             name: 'price',
             validate: input => {
-                return utils.isNumber(input) && -1 < input && input < MAXINT ? true : `Invalid Price!`.error;
+                return utils.isNumber(input) && -1 < input && input < MAX_INT ? true : `Invalid Price!`.error;
             }
         },
         {
@@ -187,7 +187,7 @@ function addNewProduct() {
             message: `Quantity to stock:`,
             name: 'quantity',
             validate: input => {
-                return utils.isInteger(input) && -1 < input && input < MAXINT ? true : `Invalid Quantity!`.error;
+                return utils.isInteger(input) && -1 < input && input < MAX_INT ? true : `Invalid Quantity!`.error;
             }
         }
     ]).then(function (answer) {
@@ -195,8 +195,8 @@ function addNewProduct() {
         let department = answer.department;
         let price = utils.roundToTwo(answer.price);
         let quantity = answer.quantity;
-        utils.queryDB(SERVERDB,
-            `INSERT INTO ${productTable} (product_name, department_name, price, stock_quantity) VALUES ("${name}", "${department}", ${price}, ${quantity});`,
+        utils.queryDB(SERVER_DB,
+            `INSERT INTO ${PRODUCT_TABLE} (product_name, department_name, price, stock_quantity) VALUES ("${name}", "${department}", ${price}, ${quantity});`,
             function (result) {
                 console.log(`Update successful!`.success);
                 console.log(`ID of new product: ${result.insertId}`.warn);
