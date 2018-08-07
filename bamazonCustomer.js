@@ -77,7 +77,7 @@ function updateTableInfo(table, set, where, fn = null) {
             }
 
             if (fn) {
-                fn(result);
+                fn(result, field);
             }
         }
     )
@@ -143,8 +143,12 @@ function promptBuy(dataPackets) {
             updateTableInfo(productTable,
                 { stock_quantity: newQuantity },
                 { item_id: id },
-                function (unused) {
-                    console.log(`Your total is $${(targetPacket.price * quantity).toFixed(2)}.`.success)
+                function (result) {
+                    if (result.affectedRows === 1) {
+                        console.log(`Your total is $${(targetPacket.price * quantity).toFixed(2)}.`.success)
+                    } else {
+                        console.log(`Something's wrong, transaction failed!`.error);
+                    }
                 }
             );
         }

@@ -147,10 +147,12 @@ function addToInventory() {
                 let newQuantity = currQuantity + quantity;
                 utils.queryDB(SERVERDB,
                     `UPDATE ${productTable} SET stock_quantity=${newQuantity} WHERE item_id=${id};`,
-                    function (unused) {
-                        console.log(`Update successful!`.success);
-                        console.log(`Updated inventory:`.warn);
-                        viewProducts();
+                    function (result) {
+                        if (result.affectedRows === 1) {
+                            console.log(`Update successful!`.success);
+                        } else {
+                            console.log(`Something is wrong! Re-check Inventory!`.error);
+                        }
                     });
             })
         }
@@ -195,10 +197,9 @@ function addNewProduct() {
         let quantity = answer.quantity;
         utils.queryDB(SERVERDB,
             `INSERT INTO ${productTable} (product_name, department_name, price, stock_quantity) VALUES ("${name}", "${department}", ${price}, ${quantity});`,
-            function (unused) {
+            function (result) {
                 console.log(`Update successful!`.success);
-                console.log(`Updated inventory:`.warn);
-                viewProducts();
+                console.log(`ID of new product: ${result.insertId}`.warn);
             })
     })
 }
