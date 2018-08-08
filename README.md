@@ -21,13 +21,13 @@ You have a number of options to choose from.
 Start Node.js by typing: `node bamazonManager.js`
 <br>
 Options are:
-1. *View Products for Sale*
+1. View Products for Sale
 <img src='./images/manager_view_products.png'>
-2. *View Low Inventory*
+2. View Low Inventory
 <img src='./images/manager_view_low_inventory.png'>
-3. *Add to Inventory* 
+3. Add to Inventory
 <img src='./images/manager_add_to_inventory.png'>
-4. *Add New Product* 
+4. Add New Product
 <img src='./images/manager_add_new_product.png'>
 
 ## *As a Supervisor*

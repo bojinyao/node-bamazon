@@ -55,7 +55,7 @@ function superVisorOptions() {
     })
 }
 
-function viewProductSales(fn = null) {
+function viewProductSales() {
     utils.queryDB(SERVER_DB, 
     `select 
     department_id, 
