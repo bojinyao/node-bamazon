@@ -4,6 +4,7 @@
 const mysql = require("mysql");
 const colors = require("colors");
 const inquirer = require("inquirer");
+const Table = require("cli-table");
 
 const utils = require("./utils.js");
 
@@ -57,7 +58,30 @@ function superVisorOptions() {
 }
 
 function viewProductSales(fn = null) {
-
+    utils.queryDB(SERVER_DB, 
+    `select 
+    department_id, 
+    department_name, 
+    over_head_costs,
+    p_s as product_sales,
+    (p_s - over_head_costs) as total_profit 
+    from departments inner join 
+        (select 
+            department_name as d_n,
+            sum(product_sales) as p_s
+            from products group by department_name) as t2
+    where t2.d_n = departments.department_name;`,
+    function(result, field) {
+        var table = new Table({
+            chars : utils.customTable
+        })
+        let headers = [ 'department_id', 'department_name', 'over_head_costs', 'product_sales','total_profit' ];
+        table.push(headers.map(department => department.verbose));
+        result.forEach(rawDataPacket => {
+            table.push(Object.values(rawDataPacket));
+        });
+        console.log(table.toString());
+    })
 }
 
 function createNewDepartment() {
@@ -110,4 +134,4 @@ function Main() {
 //=============
 // Start of App
 //=============
-// Main();
+Main();

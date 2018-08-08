@@ -20,9 +20,9 @@ const SERVER_DB = {
 }
 const PRODUCT_TABLE = "products";
 const LOW_QUANTITY_CUTOFF = 4; //inclusive
-const DEPARTMENTS = ['Books', 'Movies', 'Electronics', 'Home', 'Grocery', 'Toys', 'Clothing'];
 const MAX_INT = Number.MAX_SAFE_INTEGER;
 const MAX_STR = 100;
+var DEPARTMENTS = null;
 
 //---------- Color Themes -------------
 colors.setTheme(utils.colorTheme);
@@ -33,38 +33,42 @@ colors.setTheme(utils.colorTheme);
  * Beginning of App.
  */
 function Main() {
-    inquirer.prompt(
-        [
-            {
-                type: 'list',
-                choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product'],
-                name: 'action'
+    utils.queryDB(SERVER_DB, `SELECT department_name FROM departments;`, 
+    function(result, field) {
+        DEPARTMENTS = result.map(rawDataPacket => rawDataPacket.department_name);
+        inquirer.prompt(
+            [
+                {
+                    type: 'list',
+                    choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product'],
+                    name: 'action'
+                }
+            ]
+        ).then(answer => {
+            let action = answer.action;
+    
+            switch (action) {
+                case 'View Products for Sale':
+                    viewProducts();
+                    break;
+    
+                case 'View Low Inventory':
+                    viewLowInventory();
+                    break;
+    
+                case 'Add to Inventory':
+                    addToInventory();
+                    break;
+    
+                case 'Add New Product':
+                    addNewProduct();
+                    break;
+                default:
+                    console.log(`Unrecognized Command.`.error);
+                    break;
             }
-        ]
-    ).then(answer => {
-        let action = answer.action;
-
-        switch (action) {
-            case 'View Products for Sale':
-                viewProducts();
-                break;
-
-            case 'View Low Inventory':
-                viewLowInventory();
-                break;
-
-            case 'Add to Inventory':
-                addToInventory();
-                break;
-
-            case 'Add New Product':
-                addNewProduct();
-                break;
-            default:
-                console.log(`Unrecognized Command.`.error);
-                break;
-        }
-    })
+        })
+    })   
 }
 
 function viewProducts(fn = null) {
