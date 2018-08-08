@@ -132,4 +132,6 @@ function Main() {
 //=============
 // Start of App
 //=============
-Main();
+// Main();
+
+module.exports = Main;
