@@ -20,8 +20,6 @@ const SERVER_DB = {
     database: DB
 }
 const PRODUCT_TABLE = "products";
-const LOW_QUANTITY_CUTOFF = 4; //inclusive
-const DEPARTMENTS = ['Books', 'Movies', 'Electronics', 'Home', 'Grocery', 'Toys', 'Clothing'];
 const MAX_INT = Number.MAX_SAFE_INTEGER;
 const MAX_STR = 100;
 
