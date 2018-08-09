@@ -6,18 +6,14 @@ const colors = require("colors");
 const inquirer = require("inquirer");
 
 const utils = require("./utils.js");
+const server_db = require("./auth.js");
 
 //=================
 // Global Variables
 //=================
 const DB = "bamazon";
 const STD_TIMEOUT = 10000;
-const SERVER_DB = {
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: DB
-}
+const SERVER_DB = server_db;
 const PRODUCT_TABLE = "products";
 const LOW_QUANTITY_CUTOFF = 4; //inclusive
 const MAX_INT = Number.MAX_SAFE_INTEGER;

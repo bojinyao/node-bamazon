@@ -6,7 +6,10 @@ A mock amazon app implemented in node using mysql as database. App supports thre
 * Supervisor
 
 ## Set Up
-**Run Following SQL files in the exact order, using mySQL!**
+- run `node install` first for necessary dependencies!
+- Set up your local MySQL server and input your server info inside `auth.js`
+
+**Then, run the following SQL files in the exact order, using mySQL!**
 1. `schema.sql` <-- will drop any existing bamazon database!
 2. `products_seed.sql`
 3. `departments_seed.sql`
