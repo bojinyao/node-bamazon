@@ -1,5 +1,5 @@
-let mysql = require("mysql");
-
+const mysql = require("mysql");
+const fs = require("fs");
 module.exports = {
     /**
      * Check if number is strictly an integer.
@@ -53,6 +53,16 @@ module.exports = {
         )
         connection.end();
     },
+    
+    /**
+     * Returns if a specific file path exists.
+     * @param {string} path 
+     * @return {boolean}
+     */
+    fileExists(path) {
+        return fs.existsSync(path);
+    },
+
     colorTheme : {
         silly: 'rainbow',
         input: 'grey',
