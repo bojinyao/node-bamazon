@@ -1,11 +1,19 @@
+//==================
+// Node Dependencies
+//==================
 const fs = require("fs");
 const mysql = require("mysql");
 const colors = require("colors");
 const inquirer = require("inquirer");
 
+//================================
+// Required Files (NOT ALL LISTED)
+//================================
 const utils = require("./utils.js");
 
-
+//=================
+// Global Variables
+//=================
 const DOTENV = ".env";
 const TABLES_SETUP_SQL = "./tables_setup.sql";
 
@@ -13,6 +21,13 @@ const TABLES_SETUP_SQL = "./tables_setup.sql";
 colors.setTheme(utils.colorTheme);
 
 
+//------------ Functions ----------------
+
+/**
+ * Check if App is configured with a .env file
+ * If not, will prompt user to config App
+ * @callback fn 
+ */
 function configApp(fn = null) {
     let configured = utils.fileExists(`./${DOTENV}`);
     if (configured) {
@@ -34,7 +49,11 @@ function configApp(fn = null) {
     }
 }
 
-
+/**
+ * Helps user to config the App, and then
+ * setting up dummy data into the database to get started.
+ * @callback fn 
+ */
 function configPrompts(fn = null) {
     inquirer.prompt([
         {
@@ -107,7 +126,8 @@ function configPrompts(fn = null) {
                             }
                         })
                     connection.end(() => {
-                        console.log(`\nAll set up! App ready to use!\n`.success.bold);
+                        console.log(`\nAll set up! App ready to use!`.success.bold);
+                        console.log(`Some dummy data is already inserted for your convenience!\n`.success.bold);
                         if (fn) {
                             fn();
                         }
@@ -119,7 +139,13 @@ function configPrompts(fn = null) {
 }
 
 
-
+/**
+ * Prompt user to select while role to be in while 
+ * using the app.
+ * @requires ./bamazonCustomer.js
+ * @requires ./bamazonManager.js
+ * @requires ./bamazonSupervisor.js
+ */
 function roleSelection() {
     inquirer.prompt([
         {
