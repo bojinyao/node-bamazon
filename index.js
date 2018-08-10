@@ -111,7 +111,7 @@ function configPrompts(fn = null) {
             CREATE DATABASE ${database};`,
             function (error, result, field) {
                 if (error) {
-                    console.log(`Failed configuration:`.error);
+                    console.log(`Failed to initiate Database:`.error);
                     console.log(error);
                     return;
                 }

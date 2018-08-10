@@ -4,6 +4,7 @@
 const mysql = require("mysql");
 const colors = require("colors");
 const inquirer = require("inquirer");
+const Table = require("cli-table");
 
 const utils = require("./utils.js");
 const server_db = require("./auth.js");
@@ -31,7 +32,7 @@ function selectAllFrom(table, fn = null) {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT * FROM ${table} ORDER BY item_id;`,
+            sql: `SELECT item_id, product_name, price FROM ${table} ORDER BY item_id;`,
             timeout: STD_TIMEOUT
         },
         function (error, result, field) {
@@ -39,10 +40,9 @@ function selectAllFrom(table, fn = null) {
                 console.log(error);
                 return;
             }
-            result.forEach(rawDataPacket => {
-                console.log(`ID: ${rawDataPacket.item_id} | Product: ${rawDataPacket.product_name.info} | Price: $${rawDataPacket.price}`)
-            });
-
+            let headers = ["ID", "Product", "Price ($)"];
+            let table = utils.makeCustomTable(result, headers);
+            console.log(table.toString());
             if (fn) {
                 fn(result);
             }

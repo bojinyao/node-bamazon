@@ -71,7 +71,7 @@ function viewProducts(fn = null) {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT * FROM ${PRODUCT_TABLE} ORDER BY item_id;`,
+            sql: `SELECT item_id, product_name, department_name, price, stock_quantity FROM ${PRODUCT_TABLE} ORDER BY item_id;`,
             timeout: STD_TIMEOUT
         },
         function (error, result, field) {
@@ -79,14 +79,9 @@ function viewProducts(fn = null) {
                 console.log(error);
                 return;
             }
-            result.forEach(rawDataPacket => {
-                let id = rawDataPacket.item_id;
-                let name = rawDataPacket.product_name;
-                let department = rawDataPacket.department_name;
-                let price = rawDataPacket.price;
-                let quantity = rawDataPacket.stock_quantity;
-                console.log(`ID: ${id} | Product: ${name.info} | Department: ${department.verbose} | Price: $${price} | Inventory: ${quantity}`);
-            });
+            let headers = ["ID", "Product", "Department", "Price ($)", "Inventory"];
+            let table = utils.makeCustomTable(result, headers);
+            console.log(table.toString());
             if (fn) {
                 fn(result);
             }
@@ -99,7 +94,7 @@ function viewLowInventory() {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT * FROM ${PRODUCT_TABLE} where stock_quantity <= ${LOW_QUANTITY_CUTOFF};`,
+            sql: `SELECT item_id, product_name, department_name, price, stock_quantity FROM ${PRODUCT_TABLE} where stock_quantity <= ${LOW_QUANTITY_CUTOFF};`,
             timeout: STD_TIMEOUT
         },
         function (error, result, field) {
@@ -107,14 +102,9 @@ function viewLowInventory() {
                 console.log(error);
                 return;
             }
-            result.forEach(rawDataPacket => {
-                let id = rawDataPacket.item_id;
-                let name = rawDataPacket.product_name;
-                let department = rawDataPacket.department_name;
-                let price = rawDataPacket.price;
-                let quantity = rawDataPacket.stock_quantity;
-                console.log(`ID: ${id} | Product: ${name.info} | Department: ${department.verbose} | Price: $${price} | Inventory: ${quantity}`);
-            });
+            let headers = ["ID", "Product", "Department", "Price ($)", "Inventory"];
+            let table = utils.makeCustomTable(result, headers);
+            console.log(table.toString());
         }
     )
     connection.end();

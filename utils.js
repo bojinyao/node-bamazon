@@ -1,5 +1,7 @@
 const mysql = require("mysql");
 const fs = require("fs");
+const Table = require("cli-table");
+
 module.exports = {
     /**
      * Check if number is strictly an integer.
@@ -61,6 +63,23 @@ module.exports = {
      */
     fileExists(path) {
         return fs.existsSync(path);
+    },
+
+    /**
+     * Making consistent customized tables for this App
+     * @param {rowDataPacket[]} queryResult 
+     * @param {string[]} headers 
+     * @return {table}
+     */
+    makeCustomTable(queryResult, headers) {
+        let table = new Table({
+            chars: this.customTable
+        });
+        table.push(headers.map(h => h.verbose));
+        queryResult.forEach(rawDataPacket => {
+            table.push(Object.values(rawDataPacket));
+        });
+        return table;
     },
 
     colorTheme : {
