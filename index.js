@@ -31,20 +31,30 @@ function configPrompts(fn = null) {
         },
         {
             type: 'input',
-            message: `Database:`,
+            message: `Name of Database to create:`,
             name: 'database'
         }
     ]).then(function(answer) {
-        let host = answer.host;
-        let port = answer.port;
-        let user = answer.user;
-        let pswd = answer.pswd;
-        let database = answer.database;
+        let host = answer.host.trim();
+        let port = answer.port.trim();
+        let user = answer.user.trim();
+        let pswd = answer.pswd.trim();
+        let database = answer.database.trim();
         fs.appendFileSync(`./${DOTENV}`, `DB_HOST=${host}`);
         fs.appendFileSync(`./${DOTENV}`, `DB_PORT=${port}`);
         fs.appendFileSync(`./${DOTENV}`, `DB_USER=${user}`);
         fs.appendFileSync(`./${DOTENV}`, `DB_PASS=${pswd}`);
         fs.appendFileSync(`./${DOTENV}`, `DB_NAME=${database}`);
+
+        let connection = mysql.createConnection({
+            multipleStatements: true,
+            host: 'localhost',
+            user: 'root',
+            password: 'root'
+        });
+        connection.query(
+            ``
+        )
     })
 }
 
