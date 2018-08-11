@@ -1,18 +1,20 @@
-//=============
-// Dependencies
-//=============
+//==================
+// Node Dependencies
+//==================
 const mysql = require("mysql");
 const colors = require("colors");
 const inquirer = require("inquirer");
-const Table = require("cli-table");
 
+//===============
+// Required files
+//===============
 const utils = require("./utils.js");
 const server_db = require("./auth.js");
 
 //=================
 // Global Variables
 //=================
-const DB = "bamazon";
+const DB = "bamazon"; //unused
 const STD_TIMEOUT = 10000;
 const SERVER_DB = server_db;
 const PRODUCT_TABLE = "products";
@@ -115,7 +117,9 @@ function promptBuy(dataPackets) {
                 message: "Please enter the ID of the product:",
                 name: "productId",
                 validate: input => {
-                    return utils.isInteger(input) && 1 <= input && input <= maxId ? true : `Invalid ID`.warn;
+                    return utils.isInteger(input) 
+                            && 1 <= input 
+                            && input <= maxId ? true : `Invalid ID`.warn;
                 }
             },
             {
@@ -123,7 +127,8 @@ function promptBuy(dataPackets) {
                 message: "How many would you like to purchase?",
                 name: "quantity",
                 validate: input => {
-                    return utils.isInteger(input) && input > -1 ? true : `Invalid input`.warn;
+                    return utils.isInteger(input) 
+                            && input > -1 ? true : `Invalid input`.warn;
                 }
             }
         ]

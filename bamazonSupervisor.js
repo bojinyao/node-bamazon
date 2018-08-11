@@ -1,21 +1,22 @@
-//=============
-// Dependencies
-//=============
-const mysql = require("mysql");
+//==================
+// Node Dependencies
+//==================
 const colors = require("colors");
 const inquirer = require("inquirer");
-const Table = require("cli-table");
 
+//===============
+// Required files
+//===============
 const utils = require("./utils.js");
 const server_db = require("./auth.js");
 
 //=================
 // Global Variables
 //=================
-const DB = "bamazon";
-const STD_TIMEOUT = 10000;
+const DB = "bamazon"; //unused
+const STD_TIMEOUT = 10000; //unused
 const SERVER_DB = server_db
-const PRODUCT_TABLE = "products";
+const PRODUCT_TABLE = "products"; //unused
 const MAX_INT = Number.MAX_SAFE_INTEGER;
 const MAX_STR = 100;
 
@@ -23,6 +24,10 @@ const MAX_STR = 100;
 colors.setTheme(utils.colorTheme);
 
 //------------- Functions ---------------
+
+/**
+ * Prompt Supervisor for what to do
+ */
 function superVisorOptions() {
     inquirer.prompt([
         {
@@ -51,6 +56,10 @@ function superVisorOptions() {
     })
 }
 
+/**
+ * Dynamically create a temporary "table" 
+ * that shows profits for each existing department
+ */
 function viewProductSales() {
     utils.queryDB(SERVER_DB, 
     `select 
@@ -66,12 +75,21 @@ function viewProductSales() {
             from products group by department_name) as t2
     where t2.d_n = departments.department_name;`,
     function(result, field) {
-        let headers = [ 'department_id', 'department_name', 'over_head_costs', 'product_sales','total_profit' ];
+        let headers = [ 
+            'department_id', 
+            'department_name', 
+            'over_head_costs', 
+            'product_sales',
+            'total_profit' 
+        ];
         let table = utils.makeCustomTable(result, headers);
         console.log(table.toString());
     })
 }
 
+/**
+ * Function allowing Supervisor to create a new department
+ */
 function createNewDepartment() {
     utils.queryDB(SERVER_DB, `SELECT department_name FROM departments;`, 
         function(result, unused) {
@@ -93,7 +111,9 @@ function createNewDepartment() {
                     message: `Overhead cost for this department: $`,
                     name: 'cost',
                     validate: input => {
-                        return utils.isNumber(input) && 0 <= input && input < MAX_INT ? true : `Invalid input!`.error;
+                        return utils.isNumber(input) 
+                                && 0 <= input 
+                                && input < MAX_INT ? true : `Invalid input!`.error;
                     }
                 }
             ]).then(function(answer) {

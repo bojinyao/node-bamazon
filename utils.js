@@ -1,3 +1,6 @@
+//==================
+// Node Dependencies
+//==================
 const mysql = require("mysql");
 const fs = require("fs");
 const Table = require("cli-table");
@@ -88,7 +91,7 @@ module.exports = {
         });
         return table;
     },
-
+    // Uniform color theme for the App
     colorTheme : {
         silly: 'rainbow',
         input: 'grey',
@@ -101,6 +104,7 @@ module.exports = {
         info: 'blue',
         error: 'red'
     }, 
+    // Uniform table format for the App
     customTable : {
         'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
          , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'

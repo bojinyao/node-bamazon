@@ -1,17 +1,20 @@
-//=============
-// Dependencies
-//=============
+//==================
+// Node Dependencies
+//==================
 const mysql = require("mysql");
 const colors = require("colors");
 const inquirer = require("inquirer");
 
+//===============
+// Required files
+//===============
 const utils = require("./utils.js");
 const server_db = require("./auth.js");
 
 //=================
 // Global Variables
 //=================
-const DB = "bamazon";
+const DB = "bamazon"; //unused
 const STD_TIMEOUT = 10000;
 const SERVER_DB = server_db;
 const PRODUCT_TABLE = "products";
@@ -36,7 +39,12 @@ function Main() {
             [
                 {
                     type: 'list',
-                    choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product'],
+                    choices: [
+                        'View Products for Sale',
+                        'View Low Inventory',
+                        'Add to Inventory',
+                        'Add New Product'
+                    ],
                     name: 'action'
                 }
             ]
@@ -67,6 +75,10 @@ function Main() {
     })   
 }
 
+/**
+ * Function allowing Manager to view all products
+ * @callback fn 
+ */
 function viewProducts(fn = null) {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
@@ -91,6 +103,10 @@ function viewProducts(fn = null) {
     connection.end();
 }
 
+/**
+ * Function allowing Manager to view inventory
+ *  with low stock quantity
+ */
 function viewLowInventory() {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
@@ -112,6 +128,9 @@ function viewLowInventory() {
     connection.end();
 }
 
+/**
+ * Function allowing Manager to add inventory to any product
+ */
 function addToInventory() {
     viewProducts(
         function (rawDataPacket) {
@@ -122,7 +141,9 @@ function addToInventory() {
                     message: `ID of product to restock:`,
                     name: 'id',
                     validate: input => {
-                        return utils.isInteger(input) && 1 <= input && input <= maxId ? true : `Invalid ID`.error
+                        return utils.isInteger(input) 
+                                && 1 <= input 
+                                && input <= maxId ? true : `Invalid ID`.error
                     }
                 },
                 {
@@ -130,7 +151,8 @@ function addToInventory() {
                     message: `Number of units to restock:`,
                     name: 'quantity',
                     validate: input => {
-                        return utils.isInteger(input) && -1 < input ? true : `Invalid input`.error
+                        return utils.isInteger(input) 
+                                && -1 < input ? true : `Invalid input`.error
                     }
                 }
             ]).then(function (answer) {
@@ -152,6 +174,9 @@ function addToInventory() {
     )
 }
 
+/**
+ * Function allowing Manager to add new product
+ */
 function addNewProduct() {
     inquirer.prompt([
         {
@@ -159,7 +184,8 @@ function addNewProduct() {
             message: `Product Name:`,
             name: 'name',
             validate: input => {
-                return 1 <= input.length && input.length <= MAX_STR ? true : `Exceed character limit.`.error
+                return 1 <= input.length 
+                        && input.length <= MAX_STR ? true : `Exceed character limit.`.error
             }
         },
         {
@@ -172,7 +198,9 @@ function addNewProduct() {
             message: `Price of product: $`,
             name: 'price',
             validate: input => {
-                return utils.isNumber(input) && 0 <= input && input < MAX_INT ? true : `Invalid Price!`.error;
+                return utils.isNumber(input) 
+                        && 0 <= input 
+                        && input < MAX_INT ? true : `Invalid Price!`.error;
             }
         },
         {
@@ -180,7 +208,9 @@ function addNewProduct() {
             message: `Quantity to stock:`,
             name: 'quantity',
             validate: input => {
-                return utils.isInteger(input) && -1 < input && input < MAX_INT ? true : `Invalid Quantity!`.error;
+                return utils.isInteger(input) 
+                        && -1 < input 
+                        && input < MAX_INT ? true : `Invalid Quantity!`.error;
             }
         }
     ]).then(function (answer) {
