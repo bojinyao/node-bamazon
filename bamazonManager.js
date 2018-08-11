@@ -71,7 +71,7 @@ function viewProducts(fn = null) {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT item_id, product_name, department_name, price, stock_quantity FROM ${PRODUCT_TABLE} ORDER BY item_id;`,
+            sql: `SELECT * FROM ${PRODUCT_TABLE} ORDER BY item_id;`,
             timeout: STD_TIMEOUT
         },
         function (error, result, field) {
@@ -80,7 +80,8 @@ function viewProducts(fn = null) {
                 return;
             }
             let headers = ["ID", "Product", "Department", "Price ($)", "Inventory"];
-            let table = utils.makeCustomTable(result, headers);
+            let table = utils.makeCustomTable(result, headers, 
+                ["item_id", "product_name", "department_name", "price", "stock_quantity"]);
             console.log(table.toString());
             if (fn) {
                 fn(result);
@@ -94,7 +95,7 @@ function viewLowInventory() {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT item_id, product_name, department_name, price, stock_quantity FROM ${PRODUCT_TABLE} where stock_quantity <= ${LOW_QUANTITY_CUTOFF};`,
+            sql: `SELECT * FROM ${PRODUCT_TABLE} where stock_quantity <= ${LOW_QUANTITY_CUTOFF};`,
             timeout: STD_TIMEOUT
         },
         function (error, result, field) {
@@ -103,7 +104,8 @@ function viewLowInventory() {
                 return;
             }
             let headers = ["ID", "Product", "Department", "Price ($)", "Inventory"];
-            let table = utils.makeCustomTable(result, headers);
+            let table = utils.makeCustomTable(result, headers, 
+                ["item_id", "product_name", "department_name", "price", "stock_quantity"]);
             console.log(table.toString());
         }
     )

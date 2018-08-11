@@ -69,15 +69,22 @@ module.exports = {
      * Making consistent customized tables for this App
      * @param {rowDataPacket[]} queryResult 
      * @param {string[]} headers 
+     * @param {string[]} columns
      * @return {table}
      */
-    makeCustomTable(queryResult, headers) {
+    makeCustomTable(queryResult, headers, columns = null) {
         let table = new Table({
             chars: this.customTable
         });
         table.push(headers.map(h => h.verbose));
         queryResult.forEach(rawDataPacket => {
-            table.push(Object.values(rawDataPacket));
+            if (columns) {
+                let entries = Object.entries(rawDataPacket);
+                let keep = entries.filter(pair => columns.includes(pair[0]));
+                table.push(keep.map(pair => pair[1]));
+            } else {
+                table.push(Object.values(rawDataPacket));
+            }
         });
         return table;
     },

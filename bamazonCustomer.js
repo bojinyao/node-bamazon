@@ -32,7 +32,7 @@ function selectAllFrom(table, fn = null) {
     let connection = mysql.createConnection(SERVER_DB);
     connection.query(
         {
-            sql: `SELECT item_id, product_name, price FROM ${table} ORDER BY item_id;`,
+            sql: `SELECT * FROM ${table} ORDER BY item_id;`,
             timeout: STD_TIMEOUT
         },
         function (error, result, field) {
@@ -41,7 +41,7 @@ function selectAllFrom(table, fn = null) {
                 return;
             }
             let headers = ["ID", "Product", "Price ($)"];
-            let table = utils.makeCustomTable(result, headers);
+            let table = utils.makeCustomTable(result, headers, ["item_id", "product_name", "price"]);
             console.log(table.toString());
             if (fn) {
                 fn(result);
