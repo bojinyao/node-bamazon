@@ -79,14 +79,10 @@ function viewProducts(fn = null) {
                 console.log(error);
                 return;
             }
-            result.forEach(rawDataPacket => {
-                let id = rawDataPacket.item_id;
-                let name = rawDataPacket.product_name;
-                let department = rawDataPacket.department_name;
-                let price = rawDataPacket.price;
-                let quantity = rawDataPacket.stock_quantity;
-                console.log(`ID: ${id} | Product: ${name.info} | Department: ${department.verbose} | Price: $${price} | Inventory: ${quantity}`);
-            });
+            let headers = ["ID", "Product", "Department", "Price ($)", "Inventory"];
+            let table = utils.makeCustomTable(result, headers, 
+                ["item_id", "product_name", "department_name", "price", "stock_quantity"]);
+            console.log(table.toString());
             if (fn) {
                 fn(result);
             }
@@ -107,14 +103,10 @@ function viewLowInventory() {
                 console.log(error);
                 return;
             }
-            result.forEach(rawDataPacket => {
-                let id = rawDataPacket.item_id;
-                let name = rawDataPacket.product_name;
-                let department = rawDataPacket.department_name;
-                let price = rawDataPacket.price;
-                let quantity = rawDataPacket.stock_quantity;
-                console.log(`ID: ${id} | Product: ${name.info} | Department: ${department.verbose} | Price: $${price} | Inventory: ${quantity}`);
-            });
+            let headers = ["ID", "Product", "Department", "Price ($)", "Inventory"];
+            let table = utils.makeCustomTable(result, headers, 
+                ["item_id", "product_name", "department_name", "price", "stock_quantity"]);
+            console.log(table.toString());
         }
     )
     connection.end();

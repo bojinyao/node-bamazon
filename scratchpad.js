@@ -1,3 +1,18 @@
-const utils = require("./utils.js");
+const fs = require('fs');
+const mysql = require('mysql');
+const stream = fs.createReadStream('./scratchpad.sql');
 
-console.log( typeof utils.roundToTwo(14.999) )
+// var connection = mysql.createConnection({
+//     multipleStatements: true,
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'root'
+// });
+stream.on('data', (data) => {
+  console.log(data.toString('utf8'));
+});
+// stream.on('end', () => {
+//   console.log('end');
+// });
+
+

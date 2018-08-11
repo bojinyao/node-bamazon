@@ -1,4 +1,6 @@
-let mysql = require("mysql");
+const mysql = require("mysql");
+const fs = require("fs");
+const Table = require("cli-table");
 
 module.exports = {
     /**
@@ -53,6 +55,40 @@ module.exports = {
         )
         connection.end();
     },
+    
+    /**
+     * Returns if a specific file path exists.
+     * @param {string} path 
+     * @return {boolean}
+     */
+    fileExists(path) {
+        return fs.existsSync(path);
+    },
+
+    /**
+     * Making consistent customized tables for this App
+     * @param {rowDataPacket[]} queryResult 
+     * @param {string[]} headers 
+     * @param {string[]} columns
+     * @return {table}
+     */
+    makeCustomTable(queryResult, headers, columns = null) {
+        let table = new Table({
+            chars: this.customTable
+        });
+        table.push(headers.map(h => h.verbose));
+        queryResult.forEach(rawDataPacket => {
+            if (columns) {
+                let entries = Object.entries(rawDataPacket);
+                let keep = entries.filter(pair => columns.includes(pair[0]));
+                table.push(keep.map(pair => pair[1]));
+            } else {
+                table.push(Object.values(rawDataPacket));
+            }
+        });
+        return table;
+    },
+
     colorTheme : {
         silly: 'rainbow',
         input: 'grey',

@@ -66,14 +66,8 @@ function viewProductSales() {
             from products group by department_name) as t2
     where t2.d_n = departments.department_name;`,
     function(result, field) {
-        var table = new Table({
-            chars : utils.customTable
-        })
         let headers = [ 'department_id', 'department_name', 'over_head_costs', 'product_sales','total_profit' ];
-        table.push(headers.map(department => department.verbose));
-        result.forEach(rawDataPacket => {
-            table.push(Object.values(rawDataPacket));
-        });
+        let table = utils.makeCustomTable(result, headers);
         console.log(table.toString());
     })
 }
