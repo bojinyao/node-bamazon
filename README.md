@@ -6,7 +6,7 @@ A mock amazon app implemented in node using mysql as database. App supports thre
 * Supervisor
 
 ## Set Up - is as easy as 1,2,3
-1. Run `npm install` first in working directory
+1. Run `npm install` first inside `node-bamazon` directory
 2. Start a MySQL server, such as MAMP
 3. Finally, in your terminal, type `npm start`
 
