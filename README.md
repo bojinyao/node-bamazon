@@ -1,4 +1,4 @@
-# **node-bamazon**
+# **node-database**
 A mock amazon app implemented in node using mysql as database. App supports three different types of users
 
 * Customer
